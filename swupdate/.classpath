@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="bin"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/jxta/SaEeD-P2P/lib/bcprov-jdk14.jar"/>
+	<classpathentry kind="lib" path="C:/jxta/SaEeD-P2P/lib/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="C:/jxta/SaEeD-P2P/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="C:/jxta/SaEeD-P2P/lib/jxta.jar"/>
+	<classpathentry kind="lib" path="C:/jxta/SaEeD-P2P/lib/jxtacms.jar"/>
+	<classpathentry kind="lib" path="C:/jxta/SaEeD-P2P/lib/jxtacmsshell.jar"/>
+	<classpathentry kind="lib" path="C:/jxta/SaEeD-P2P/lib/log4j.jar"/>
+	<classpathentry kind="lib" path="C:/jxta/SaEeD-P2P/lib/org.mortbay.jetty.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
