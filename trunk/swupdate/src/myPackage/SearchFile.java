@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 //import jxta libraries
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.share.ContentAdvertisement;
+import net.jxta.share.ContentId;
 import net.jxta.share.client.CachedListContentRequest;
 
 //This class will search for specifed contents through SaEeD Group
@@ -97,17 +98,23 @@ class ListRequestor extends CachedListContentRequest
         log.append("[+]Searching for More Contents.\n");
         searchResult = getResults();
         //showing the results
-        String [] titles = {"File Name" , "Size Bytes","Check Sum (CRC-32)"};
+        String [] titles = {"Version" ,"File Name", "Size Bytes","Check Sum (CRC-32)"};
         //add new contents to Search table
         DefaultTableModel TableModel1 = new DefaultTableModel(titles, searchResult.length);
         table.setModel(TableModel1);
         
         for(int i=0; i < searchResult.length;i++){
+        	System.out.println(searchResult[i].toString());
+        	ContentId cid= searchResult[i].getContentId();
+        	String MD5val = cid.toString();
+        	
             log.append("[*]Found: " + searchResult[i].getName()+"\n" +
                     "Size: " + searchResult[i].getLength() + " Bytes\n");
             table.setValueAt(searchResult[i].getName(),i,0);
-            table.setValueAt(searchResult[i].getLength(),i,1);
-            table.setValueAt(searchResult[i].getDescription(),i,2);
+            table.setValueAt(searchResult[i].getType(),i,1);
+            table.setValueAt(searchResult[i].getLength(),i,2);
+            table.setValueAt(searchResult[i].getDescription(),i,3);
+            table.setValueAt(MD5val,i,3);
             
         }
     }

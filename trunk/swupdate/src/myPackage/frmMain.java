@@ -873,7 +873,7 @@ public class frmMain extends javax.swing.JFrame
     private void btnVerifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerifyActionPerformed
     //Create Check sum for downloaded file and check it with original check sum
     // to make sure download was successfull.
-        if(download.myDonwloader.isDone())
+        if(download.myDownloader.isDone())
         {
             File myNewFile = new File(Path + File.separator + myFileName);
             String newSum = myCheckSum.getFileSum(myNewFile);
@@ -893,7 +893,7 @@ public class frmMain extends javax.swing.JFrame
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
 //Canceling the current Download
-        download.myDonwloader.cancel();
+        download.myDownloader.cancel();
         lblStatus.setText("Download Canceled.");
         myProgressBar.setValue(0);
         btnCancel.setEnabled(false);
