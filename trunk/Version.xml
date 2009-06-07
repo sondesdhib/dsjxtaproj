@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><Version-Details>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Version-Details>
   <Version>
     <Version_Id Version_Id="v1"/>
-    <Version_Root Version_root="v1"/>
+    <Version_Root Version_Root="v1"/>
     <Dependency Dependency="none"/>
   </Version>
 
   <Version>
     <Version_Id Version_Id="v2"/>
-    <Version_Root Version_root="v2"/>
+    <Version_Root Version_Root="v2"/>
     <Dependency Dependency="none"/>
   </Version>
   
