@@ -37,12 +37,12 @@ public class SwUpdateService
     private void getServices()
     {   //Obtaining Peer Group services
         log.append("[+]Getting Services for Chat component...\n");
-        myPipeService = SaEeDGroup.getPipeService();
-        myPeerID = SaEeDGroup.getPeerID().toString();
+        //myPipeService = SaEeDGroup.getPipeService();
+        //myPeerID = SaEeDGroup.getPeerID().toString();
         
         try{ //Creates input pipe
             FileInputStream is = new FileInputStream("swUpdate.adv");
-            pipeAdv = (PipeAdvertisement)AdvertisementFactory.newAdvertisement(MimeMediaType.XMLUTF8,is);
+            //pipeAdv = (PipeAdvertisement)AdvertisementFactory.newAdvertisement(MimeMediaType.XMLUTF8,is);
             is.close();
         }catch(Exception e){
             log.append("[+]Exception: " + e.getMessage()+"\n");
@@ -56,54 +56,54 @@ public class SwUpdateService
     {
         log.append("[+]Start Listening for Incoming Messages.\n");
         try{
-            pipeInput = myPipeService.createInputPipe(pipeAdv,this);
+            //pipeInput = myPipeService.createInputPipe(pipeAdv,this);
             
         }catch(Exception e){
             log.append("[-]Exception: " + e.getMessage()+"\n");
             return;
         }
-        if(pipeInput == null){
-            log.append("[-]Failure in Opening Input Pipe :-(\n");
-            System.exit(-1);
-        }
+//        if(pipeInput == null){
+//            log.append("[-]Failure in Opening Input Pipe :-(\n");
+//            System.exit(-1);
+//        }
     }
     public void stopListening() //This method will stop input pipe
     {
-        pipeInput.close();
+        //pipeInput.close();
         log.append("[-]Input Pipe Closed for Incomming Message.\n");
     }
     //this listener will respond to incoming messages and show them in Designated area
-    public void pipeMsgEvent(PipeMsgEvent ev)
-    {
-        log.append("[+]Message Received...\n");
-        Message myMessage = null;
-        try{
-            myMessage = ev.getMessage();
-            if(myMessage == null){
-                return;
-            }
-        }catch(Exception e){
-            System.out.println("[-]Exception happend when trying to get Message element!");
-            e.printStackTrace();
-        }
-        //Assigning values to wanted Tages
-        ElementIterator el = myMessage.getMessageElements();
-        MessageElement me = myMessage.getMessageElement("peerName");
-        MessageElement me2 = myMessage.getMessageElement("peerID");
-        MessageElement me3 = myMessage.getMessageElement("chatMessage");
-        MessageElement me4 = myMessage.getMessageElement("Time");
-        
-        String peerName = me.toString();
-        String peerID = me2.toString();
-        String msgContent = me3.toString();
-        String sentTime = me4.toString();
-        if(me.toString() == null || me2.equals(myPeerID)){
-            return;
-        }
-        else{
-         txtChat.append("[ " + me+ "@" + me4 +"]  " + me3 + "\n");
-         
-        }  
-    }
-    
+//    public void pipeMsgEvent(PipeMsgEvent ev)
+//    {
+//        log.append("[+]Message Received...\n");
+//        Message myMessage = null;
+//        try{
+//            myMessage = ev.getMessage();
+//            if(myMessage == null){
+//                return;
+//            }
+//        }catch(Exception e){
+//            System.out.println("[-]Exception happend when trying to get Message element!");
+//            e.printStackTrace();
+//        }
+//        //Assigning values to wanted Tages
+//        ElementIterator el = myMessage.getMessageElements();
+//        MessageElement me = myMessage.getMessageElement("peerName");
+//        MessageElement me2 = myMessage.getMessageElement("peerID");
+//        MessageElement me3 = myMessage.getMessageElement("chatMessage");
+//        MessageElement me4 = myMessage.getMessageElement("Time");
+//        
+//        String peerName = me.toString();
+//        String peerID = me2.toString();
+//        String msgContent = me3.toString();
+//        String sentTime = me4.toString();
+//        if(me.toString() == null || me2.equals(myPeerID)){
+//            return;
+//        }
+//        else{
+//         txtChat.append("[ " + me+ "@" + me4 +"]  " + me3 + "\n");
+//         
+//        }  
+//    }
+//    
 }

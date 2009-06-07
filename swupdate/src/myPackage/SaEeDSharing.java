@@ -15,6 +15,11 @@ package myPackage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import javax.swing.JTextArea;
 //import jxta libraries
 import net.jxta.exception.PeerGroupException;
@@ -23,6 +28,7 @@ import net.jxta.share.CMS;
 import net.jxta.share.Content;
 import net.jxta.share.ContentManager;
 import net.jxta.share.SearchListener;
+import net.jxta.share.metadata.ContentMetadata;
 
 //This class will share contents through peers in SaEeD Group
 public class SaEeDSharing extends Thread implements SearchListener 
@@ -40,6 +46,8 @@ public class SaEeDSharing extends Thread implements SearchListener
         this.log = log;
         this.SaEeDGroup = group;
         this.myPath = givenPath;
+        File rfile = new File(myPath.getPath() + File.separator +"shares.ser");
+        rfile.delete();
         launchCMS();
     }
     private void launchCMS()
@@ -56,25 +64,52 @@ public class SaEeDSharing extends Thread implements SearchListener
             }else{
                 log.append("[+]CMS object Successfully Created.\n");
             }
+           
+            DOMElements myElement = new DOMElements();
+            myElement.Parse(myPath + File.separator + "Version.xml");
+            
+            HashMap<String, String> DirMap = myElement.GetDir();
+            
             //sharing all files in shared directory
             ContentManager contentManager = null;
             contentManager = cms.getContentManager();
             
-            File [] list = myPath.listFiles();
+            Set set = DirMap.entrySet();
+            Iterator i = set.iterator();
+
+            while(i.hasNext()){
+              Map.Entry me = (Map.Entry)i.next();
+              System.out.println(me.getKey() + " : " + me.getValue() );
+            
+            File DirPath = new File(myPath + File.separator + me.getValue());
+            System.out.println(DirPath.getPath());
+            File [] list = DirPath.listFiles();
             CheckSumCalc checkSum = new CheckSumCalc();
             
-            for(int i=0;i<list.length;i++){
-                if(list[i].isFile())
-                {//Sharing Files and check sums in network
-                    contentManager.share(list[i],checkSum.getFileSum(list[i]));                    
+            
+            File dir = new File(".");
+            String base = dir.getCanonicalPath();
+            String relative = new File(base).toURI().relativize(new File(DirPath.getPath()).toURI()).getPath();
+            
+            String version = me.getKey().toString();
+            log.append("ABSOLUTE PATH for " + version + " :: " + relative + "\n");
+            
+            for(int k=0;k<list.length;k++){
+                if(list[k].isFile())
+                {//Sharing Files and check sums in network    
+                	//contentManager.share(list[k],version,relative,checkSum.getFileSum(list[k]));
+                	contentManager.share(list[k],version,relative + list[k].getName(),checkSum.getFileSum(list[k]));             	
                 }
             }                     
+            
+            }
+            
             log.append("======= Shared Contents =======\n");
             //viewing the shared contents
             Content [] content = cms.getContentManager().getContent();
             //also shows the share contents in log area
             for(int j=0;j< content.length;j++){
-                log.append("[*]" + content[j].getContentAdvertisement().getName()+  "\tSum: " + 
+            	log.append("[*]" + content[j].getContentAdvertisement().getName()+  "\t Relative : " + content[j].getContentAdvertisement().getType() + "\tSum: " + 
                         content[j].getContentAdvertisement().getDescription()+"\n");
             }
             log.append("[+]All Content are Successfully Shared :-)\n");

@@ -24,7 +24,7 @@ import net.jxta.share.client.GetContentRequest;
 public class DownloadFile extends Thread
 {
     private PeerGroup SaEeDGroup=null;
-    protected GetRemoteFile myDonwloader = null;
+    protected GetRemoteFile myDownloader = null;
     private JTextArea log;
     public DownloadFile(PeerGroup group, ContentAdvertisement contentAdv, File destination , JTextArea log,
                          JProgressBar progress) 
@@ -32,7 +32,8 @@ public class DownloadFile extends Thread
         this.log = log;
         this.log.append("[+]Starting Download Object.\n");
         //inner classes used here for better performance
-        myDonwloader = new GetRemoteFile(group, contentAdv, destination, this.log, progress);        
+        myDownloader = new GetRemoteFile(group, contentAdv, destination, this.log, progress); 
+        System.out.println("Destination is :: " + destination.getAbsolutePath());
         
     }
     
