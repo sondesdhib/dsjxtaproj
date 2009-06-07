@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -527,12 +528,16 @@ public class frmMain extends javax.swing.JFrame
         jTabbedPane1.addTab("Downloads", new javax.swing.ImageIcon(getClass().getResource("/myPackage/myIcons/24x24/downloadIcon.png")), jPanel4, "Downloads Status");
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Peers Chatting Service:"));
-        txtChatArea.setColumns(20);
-        txtChatArea.setEditable(false);
-        txtChatArea.setRows(5);
-        txtChatArea.setToolTipText("Chat Area");
-        jScrollPane4.setViewportView(txtChatArea);
-
+        //txtChatArea.setColumns(20);
+        //txtChatArea.setEditable(false);
+        //txtChatArea.setRows(5);
+        //txtChatArea.setToolTipText("Chat Area");
+        //jScrollPane4.setViewportView(txtChatArea);
+        JLabel version = new JLabel("New Version");
+        txtField = new JTextField(10);
+        JLabel rootDir = new JLabel("Root Directory");
+        root = new JTextField(10);
+ 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel5.setText("Enter Message:");
 
@@ -544,9 +549,9 @@ public class frmMain extends javax.swing.JFrame
         });
 
         btnSendMessage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/myPackage/myIcons/24x24/launchIcon.png")));
-        btnSendMessage.setMnemonic('S');
-        btnSendMessage.setText("Send");
-        btnSendMessage.setToolTipText("Sending Message");
+        btnSendMessage.setMnemonic('P');
+        btnSendMessage.setText("Publish");
+        btnSendMessage.setToolTipText("Publishing New Version");
         btnSendMessage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSendMessageActionPerformed(evt);
@@ -560,26 +565,28 @@ public class frmMain extends javax.swing.JFrame
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator5, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+                    //.addComponent(jSeparator5, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+                    //.addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    		.addComponent(version)
+                            .addComponent(txtField)
+                            .addComponent(rootDir)
+                            .addComponent(root)
                         .addComponent(btnSendMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                //.addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                //.addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                		.addComponent(version)
+                        .addComponent(txtField)
+                        .addComponent(rootDir)
+                        .addComponent(root)
                     .addComponent(btnSendMessage))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
@@ -965,11 +972,12 @@ public class frmMain extends javax.swing.JFrame
     //Because we using the same pipe for input and output first we need to stop input pipe
     // then send our message then again activate our input pipe
         chatIn.stopListening();
-        chatOut.setMessage(txtMessage.getText());
+        //chatOut.setMessage(txtMessage.getText());
+        chatOut.setMessage(txtField.getText()+" "+root.getText());
         chatOut.startingPipe();
         //activating the Input pipe again
         chatIn.startListening();
-        txtMessage.setText("");
+       // txtMessage.setText("");
     }//GEN-LAST:event_btnSendMessageActionPerformed
 
     private void MenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemExitActionPerformed
@@ -1131,6 +1139,8 @@ public class frmMain extends javax.swing.JFrame
     private javax.swing.JTextField txtFilename;
     public javax.swing.JTextArea txtLog;
     private javax.swing.JTextField txtMessage;
+    private JTextField txtField;    
+    private JTextField root;
     // End of variables declaration//GEN-END:variables
     
 }

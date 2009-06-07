@@ -115,8 +115,8 @@ public class ChatInput extends Thread implements PipeMsgListener
             return;
         }
         else{
-         txtChat.append("[ " + me+ "@" + me4 +"]  " + me3 + "\n");
-         
+         //txtChat.append("[ " + me+ "@" + me4 +"]  " + me3 + "\n");
+         log.append("Received new version for update "+ " [ " + me+ "@" + me4 +"]  " + me3 + "\n");
         }  
     }
     

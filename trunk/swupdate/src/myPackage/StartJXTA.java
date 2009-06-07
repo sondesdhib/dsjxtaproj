@@ -186,6 +186,7 @@ public class StartJXTA
     {
      return SaEeDGroup;   
     }
+    
     public PeerGroupAdvertisement getSaEeDAdv(){//This accessor will return Advertisements
         return SaEeDAdv;
     }
