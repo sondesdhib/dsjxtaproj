@@ -251,13 +251,13 @@ public class frmMain extends javax.swing.JFrame
         */
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SaEeD P2P File Sharing Application V0.01");
+        setTitle("SwUpdate P2P File Sharing Application");
         setLocationByPlatform(true);
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Connection Information:"));
         txtLog.setColumns(20);
         txtLog.setEditable(false);
         txtLog.setRows(5);
-        txtLog.setText("===== Welcome to SaEeD's Peer-To-Peer File Sharing Application =====\n");
+        txtLog.setText("===== Welcome to Swupdate Peer-To-Peer File Sharing Application =====\n");
         txtLog.setToolTipText("Connection Information");
         txtLog.setBorder(javax.swing.BorderFactory.createTitledBorder("Log:"));
         jScrollPane1.setViewportView(txtLog);
@@ -971,6 +971,9 @@ public class frmMain extends javax.swing.JFrame
     //Sending Chat message through the pipe 
     //Because we using the same pipe for input and output first we need to stop input pipe
     // then send our message then again activate our input pipe
+    	DOMElements.insertVersion(txtField.getText(),root.getText(),"None");
+    	launchSharing.stopCMS();
+    	launchSharing.launchCMS();
         chatIn.stopListening();
         //chatOut.setMessage(txtMessage.getText());
         chatOut.setMessage(txtField.getText()+" "+root.getText());

@@ -50,7 +50,7 @@ public class SaEeDSharing extends Thread implements SearchListener
         rfile.delete();
         launchCMS();
     }
-    private void launchCMS()
+    public void launchCMS()
     {
         //This method will initializie the CMS library
         log.append("[+]Initialising CMS Libraries...\n");
