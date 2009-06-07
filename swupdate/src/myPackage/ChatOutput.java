@@ -135,7 +135,7 @@ public class ChatOutput extends Thread implements Runnable,
             myMessage.addMessageElement(null,sme3);
             //Trigger the Sending            
             pipeOut.send(myMessage);
-            txtChat.append("[ " + myPeerName+"@" + myTime+ "]  " + msg + "\n");
+            log.append("[ " + myPeerName+"@" + myTime+ "]  " + msg + "\n");
             
         }catch(Exception e)
         {
