@@ -86,7 +86,8 @@ public class SearchFile extends Thread
     public void killThread() //This method will Terminate the Search Thread
     {
         log.append("[-]Searching Thread is stopping.\n");
-        running =false;   
+        stopThread();
+        
     }
     public ContentAdvertisement [] getContentAdvs() //Accessor to show found contents
     {
@@ -100,6 +101,8 @@ class ListRequestor extends CachedListContentRequest
     private JTextArea log = null;
     private JTable table =null;
     private PeerGroup LRGroup = null;
+    DownloadFile [] df;
+    private int r_count = 0;
     
     public ListRequestor(PeerGroup SaEeDGroup , String SubStr, JTextArea log,JTable table){
         super(SaEeDGroup,SubStr);
@@ -108,6 +111,16 @@ class ListRequestor extends CachedListContentRequest
         this.LRGroup = SaEeDGroup;
     }
 
+    @Override
+    public void cancel() {
+    	// TODO Auto-generated method stub
+    	super.cancel();
+    	for(int i=0;i<r_count;i++)
+    	{
+    		df[i].stopThread();
+    	} 	
+    }
+    
     public void notifyMoreResults() //this method will notify user when new contents are found
     {
         log.append("[+]Searching for More Contents.\n");
@@ -124,15 +137,15 @@ class ListRequestor extends CachedListContentRequest
         dm.getDataVector().removeAllElements();
         
         //add new contents to Search table
-
-        
+        r_count = searchResult.length;
+        df = new DownloadFile[r_count];
         for(int i=0; i < searchResult.length;i++){
         	
             log.append("[*]Found: " + searchResult[i].getName()+"\n" +
                     "Size: " + searchResult[i].getLength() + " Bytes\n");
             dm.addRow(new Object [] {searchResult[i].getName(),searchResult[i].getType(), searchResult[i].getLength(),searchResult[i].getDescription(), 0}); 
-            DownloadFile df = new DownloadFile(LRGroup,searchResult[i], new File("file"+i+".mp3"), table,i,4,log);
-            df.start();
+            df[i] = new DownloadFile(LRGroup,searchResult[i], new File("file"+i+".mp3"), table,i,4,log);
+            df[i].start();
         }
     }
     public ContentAdvertisement [] getContentAdvs()//acessor to return contents
