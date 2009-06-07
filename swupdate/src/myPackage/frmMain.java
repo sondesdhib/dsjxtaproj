@@ -1,8 +1,11 @@
 
 package myPackage;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.io.File;
+import java.util.Hashtable;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -10,11 +13,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
 //import jxta Library
 import net.jxta.share.ContentAdvertisement;
 
@@ -285,31 +291,87 @@ public class frmMain extends javax.swing.JFrame
 
         txtFilename.setToolTipText("Enter File Name to search for.");
 
-        mySearchTable.setAutoCreateRowSorter(true);
-        mySearchTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "File Name", "Size Bytes", "Check Sum (CRC-32)"
+        //mySearchTable.setAutoCreateRowSorter(true);
+        
+        
+        DefaultTableModel dm = new DefaultTableModel() {
+            public Class getColumnClass(int col) {
+              switch (col) {
+                case  0: return String.class;
+                case  1: return String.class;
+                case  2: return String.class;
+                case  3: return String.class;
+                case  4: return Integer.class;
+                default: return Object.class;
+              }
             }
-        ));
+            public boolean isCellEditable(int row, int col) {
+              switch (col) {
+                case  4: return false;
+                case  2: return false;
+                case  3: return false;
+                case  1: return false;
+                case  0: return false;
+                default: return true;
+              }
+            }  
+            public void setValueAt(Object obj, int row, int col) {
+              if (col != 4) {
+                super.setValueAt(obj, row, col); 
+                return;
+              }
+              try {
+                Integer integer = new Integer(obj.toString());
+                super.setValueAt(checkMinMax(integer), row, col);
+              } catch (NumberFormatException ex) {
+                System.out.println("Found minor exception...");
+              }
+            }
+          };
+          dm.setDataVector(new Object[][]{
+            {null,null,null,null,null},
+            {null,null,null,null,null},
+            {null,null,null,null,null},
+            {null,null,null,null,null},
+            {null,null,null,null,null},
+            {null,null,null,null,null},
+            {null,null,null,null,null}},
+            new Object[]{"Version" ,"File Name", "Size Bytes","Check Sum (CRC-32)", "Progress"});
+
+        
+        mySearchTable.setModel(dm);
+        
+        IndicatorCellRenderer renderer = new IndicatorCellRenderer(0,100);
+        renderer.setStringPainted(true);
+        renderer.setBackground(mySearchTable.getBackground());
+        renderer.setTable(mySearchTable);
+        
+        
+        // set limit value and fill color
+        Hashtable limitColors = new Hashtable();
+        limitColors.put(new Integer( 0), Color.green);
+        limitColors.put(new Integer(60), Color.yellow);
+        limitColors.put(new Integer(80), Color.red);
+        renderer.setLimits(limitColors);
+
+        mySearchTable.getColumnModel().getColumn(4).setCellRenderer(renderer);
+        
+        mySearchTable.getModel().addTableModelListener(new TableModelListener() {
+            public void tableChanged(TableModelEvent e) {
+              if (e.getType() == TableModelEvent.UPDATE) {
+                int col = e.getColumn();
+                if (col == 4) {
+                  int row = e.getFirstRow();
+                  TableModel model = (TableModel)e.getSource();
+                  Integer value = (Integer)model.getValueAt(row, col);
+                  //System.out.println("Change in :: " + row + "," + col);
+                  model.setValueAt(checkMinMax(value), row, ++col);
+                  mySearchTable.repaint();
+                }
+              }
+            }
+          });
+
         mySearchTable.setToolTipText("List of Found Files.");
         jScrollPane2.setViewportView(mySearchTable);
 
@@ -1145,5 +1207,13 @@ public class frmMain extends javax.swing.JFrame
     private JTextField txtField;    
     private JTextField root;
     // End of variables declaration//GEN-END:variables
-    
+    private Integer checkMinMax(Integer value) {
+        int intValue = value.intValue();
+        if (intValue < 0) {
+          intValue = 0;
+        } else if (100 < intValue) {
+          intValue = 100;
+        }
+        return new Integer(intValue);
+      }
 }

@@ -64,8 +64,8 @@ public class IndicatorCellRenderer extends JProgressBar implements TableCellRend
       setForeground(color);
     }
     setValue(n);
-    
-    myTable.repaint();
+    try{
+    myTable.repaint();}catch(Exception e){}
     return this;
   }
 
