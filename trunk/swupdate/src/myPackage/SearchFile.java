@@ -11,21 +11,9 @@
  * Softwares   : JXTA Version 2.4.1, JDK Version 1.6.0_05, NetBeans IDE 5.5
  */
 package myPackage;
-import java.awt.Color;
-import java.awt.Component;
-import java.io.File;
-import java.util.Hashtable;
-
-import javax.swing.DefaultCellEditor;
-import javax.swing.JProgressBar;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 //import jxta libraries
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.share.ContentAdvertisement;
@@ -65,8 +53,7 @@ public class SearchFile extends Thread
         reqestor.activateRequest();
         
             try{
-            Thread.sleep(10*1000); //Time out for each search through network
-            stopThread();
+            Thread.sleep(8*1000); //Time out for each search through network
             } catch(InterruptedException ie)
             {
                 stopThread();
@@ -91,7 +78,7 @@ public class SearchFile extends Thread
     public ContentAdvertisement [] getContentAdvs() //Accessor to show found contents
     {
         return reqestor.searchResult;
-    }
+    } 
 }
 //inner class for search
 class ListRequestor extends CachedListContentRequest
@@ -99,57 +86,41 @@ class ListRequestor extends CachedListContentRequest
     public static ContentAdvertisement [] searchResult = null;
     private JTextArea log = null;
     private JTable table =null;
-    private PeerGroup LRGroup = null;
     
     public ListRequestor(PeerGroup SaEeDGroup , String SubStr, JTextArea log,JTable table){
         super(SaEeDGroup,SubStr);
         this.log = log;
         this.table = table;
-        this.LRGroup = SaEeDGroup;
     }
 
     public void notifyMoreResults() //this method will notify user when new contents are found
     {
         log.append("[+]Searching for More Contents.\n");
-        try{
-        	searchResult = getResults();
-        
-        }catch(Exception e)
-        {
-        	System.out.println("Get Results Prob !");
-        }
-        
-        //clearing the old results
-        DefaultTableModel dm = (DefaultTableModel)table.getModel();
-        dm.getDataVector().removeAllElements();
-        
+        searchResult = getResults();
+        //showing the results
+        String [] titles = {"Version" ,"File Name", "Size Bytes","Check Sum (CRC-32)"};
         //add new contents to Search table
-
+        DefaultTableModel TableModel1 = new DefaultTableModel(titles, searchResult.length);
+        table.setModel(TableModel1);
         
         for(int i=0; i < searchResult.length;i++){
+        	System.out.println(searchResult[i].toString());
+        	ContentId cid= searchResult[i].getContentId();
+        	String MD5val = cid.toString();
         	
             log.append("[*]Found: " + searchResult[i].getName()+"\n" +
                     "Size: " + searchResult[i].getLength() + " Bytes\n");
-            dm.addRow(new Object [] {searchResult[i].getName(),searchResult[i].getType(), searchResult[i].getLength(),searchResult[i].getDescription(), 0}); 
-            DownloadFile df = new DownloadFile(LRGroup,searchResult[i], new File("file"+i+".mp3"), table,i,4,log);
-            df.start();
+            table.setValueAt(searchResult[i].getName(),i,0);
+            table.setValueAt(searchResult[i].getType(),i,1);
+            table.setValueAt(searchResult[i].getLength(),i,2);
+            table.setValueAt(searchResult[i].getDescription(),i,3);
+            table.setValueAt(MD5val,i,3);
+            
         }
     }
     public ContentAdvertisement [] getContentAdvs()//acessor to return contents
     { 
         return searchResult;
-    }
-
-    private Integer checkMinMax(Integer value) {
-        int intValue = value.intValue();
-        if (intValue < 0) {
-          intValue = 0;
-        } else if (100 < intValue) {
-          intValue = 100;
-        }
-        return new Integer(intValue);
-      }
-    }
-
+    }   
     
-
+}

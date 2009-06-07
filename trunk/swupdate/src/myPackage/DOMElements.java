@@ -18,14 +18,9 @@ public class DOMElements{
 	static DocumentBuilderFactory factory;
 	static Document doc;
 	static DocumentBuilder builder;
-	static File Path;
 	NodeList VersionList;
 	HashMap<String, String> VersionDirMap;
 	HashMap<String, String> VersionDepMap;
-	public DOMElements(File mPath) {
-		// TODO Auto-generated constructor stub
-		Path = mPath;
-	}
    void Parse(String xmlFile){
      try {
        File file = new File(xmlFile);
@@ -35,7 +30,7 @@ public class DOMElements{
     	   factory = DocumentBuilderFactory.newInstance();
     	   builder = factory.newDocumentBuilder();
     	   
-    	   doc = builder.parse(new File(Path.getPath() + File.separator +"Version.xml"));
+    	   doc = builder.parse(new File("Version.xml"));
     	   doc.getDocumentElement().normalize();
  
          // Get a list of all elements in the document
@@ -58,12 +53,12 @@ public class DOMElements{
 	        	  String version_id = velement.getAttribute("Version_Id");
 	        	  
         	 
-        	  //System.out.println("Version ID:"+ version_id);
+        	  System.out.println("Version ID:"+ version_id);
         	      
         	  NodeList vrootList = element.getElementsByTagName("Version_Root");
         	  Element vrootelement = (Element) vrootList.item(0);
         	  String versionRoot = vrootelement.getAttribute("Version_Root");
-        	  //System.out.println("Version Root:"+(versionRoot));
+        	  //System.out.println("Version Root:"+(vroot.item(0).getNodeValue()));
 
         	  NodeList deplist = element.getElementsByTagName("Dependency");
         	  Element depelement = (Element) deplist.item(0);
@@ -97,7 +92,7 @@ public class DOMElements{
    static void insertVersion(String version,String root,String dependency)
    {
 	   try {
-	       File file = new File(Path.getPath() + File.separator +"Version.xml");
+	       File file = new File("Version.xml");
 	       
 	       if(file.exists()){
 	         // Create a factory
@@ -162,7 +157,7 @@ public class DOMElements{
             	    //Saving the XML content to File
             	    OutputStream f0;
             	    byte buf[] = xmlString.getBytes();
-            	    f0 = new FileOutputStream(Path.getPath() + File.separator +"Version.xml");
+            	    f0 = new FileOutputStream("Version.xml");
             	    for(int i=0;i<buf .length;i++) {
             	 	f0.write(buf[i]);
             	    }
