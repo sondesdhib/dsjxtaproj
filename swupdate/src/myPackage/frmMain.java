@@ -1139,7 +1139,18 @@ public class frmMain extends javax.swing.JFrame
     {
     	txtFilename.setText(filename);
     	//ActionEvent event = new ActionEvent();
+    	jTabbedPane1.setSelectedIndex(1);
     	btnSearchActionPerformed(null);
+    }
+    
+    private Integer checkMinMax(Integer value) {
+        int intValue = value.intValue();
+        if (intValue < 0) {
+          intValue = 0;
+        } else if (100 < intValue) {
+          intValue = 100;
+        }
+        return new Integer(intValue);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1213,13 +1224,5 @@ public class frmMain extends javax.swing.JFrame
     private JTextField txtField;    
     private JTextField root;
     // End of variables declaration//GEN-END:variables
-    private Integer checkMinMax(Integer value) {
-        int intValue = value.intValue();
-        if (intValue < 0) {
-          intValue = 0;
-        } else if (100 < intValue) {
-          intValue = 100;
-        }
-        return new Integer(intValue);
-      }
+ 
 }
