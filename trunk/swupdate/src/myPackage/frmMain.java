@@ -3,7 +3,6 @@ package myPackage;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Hashtable;
 
@@ -1214,5 +1213,13 @@ public class frmMain extends javax.swing.JFrame
     private JTextField txtField;    
     private JTextField root;
     // End of variables declaration//GEN-END:variables
-    
+    private Integer checkMinMax(Integer value) {
+        int intValue = value.intValue();
+        if (intValue < 0) {
+          intValue = 0;
+        } else if (100 < intValue) {
+          intValue = 100;
+        }
+        return new Integer(intValue);
+      }
 }
