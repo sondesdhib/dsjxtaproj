@@ -39,6 +39,12 @@ public class DownloadFile extends Thread
         System.out.println("Destination is :: " + destination.getAbsolutePath());
         
     }
+    
+    public void stopThread()
+    {
+    	myDownloader.cancel();
+    }
+    
     public DownloadFile(PeerGroup group, ContentAdvertisement contentAdv, File destination , JTable table,
             int trow,int tcol , JTextArea log) 
     {
