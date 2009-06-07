@@ -1,0 +1,14 @@
+<?xml version = "1.0" ?>
+<Version-Details>
+  <Version>
+    <Version_Id>v1</Version_Id>
+    <Version_Root>v1</Version_Root>
+    <Dependancy>None</Dependancy>
+  </Version>
+
+  <Version>
+    <Version_Id>v2</Version_Id>
+    <Version_Root>v2</Version_Root>
+    <Dependancy>v1</Dependancy>
+  </Version>
+</Version-Details>
