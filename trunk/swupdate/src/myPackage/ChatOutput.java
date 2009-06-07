@@ -80,7 +80,7 @@ public class ChatOutput extends Thread implements Runnable,
         myPeerName = SaEeDGroup.getPeerName();
         
         try{//Creating Pipe Advertisements from file
-            FileInputStream in = new FileInputStream("saeedPipe.adv");
+            FileInputStream in = new FileInputStream("swUpdate.adv");
             pipeAdv = (PipeAdvertisement) AdvertisementFactory.newAdvertisement(MimeMediaType.XMLUTF8,in);
             in.close();
         }catch(IOException e){
