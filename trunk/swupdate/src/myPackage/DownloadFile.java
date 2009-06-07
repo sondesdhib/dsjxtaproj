@@ -14,6 +14,7 @@ package myPackage;
 
 import java.io.File;
 import javax.swing.JProgressBar;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.plaf.ProgressBarUI;
 import net.jxta.peergroup.PeerGroup;
@@ -26,6 +27,8 @@ public class DownloadFile extends Thread
     private PeerGroup SaEeDGroup=null;
     protected GetRemoteFile myDownloader = null;
     private JTextArea log;
+    private JTable urTable = null;
+    private int row,column;
     public DownloadFile(PeerGroup group, ContentAdvertisement contentAdv, File destination , JTextArea log,
                          JProgressBar progress) 
     {
@@ -36,12 +39,27 @@ public class DownloadFile extends Thread
         System.out.println("Destination is :: " + destination.getAbsolutePath());
         
     }
+    public DownloadFile(PeerGroup group, ContentAdvertisement contentAdv, File destination , JTable table,
+            int trow,int tcol , JTextArea log) 
+    {
+    	this.log = log;	
+    this.urTable = table;
+    this.row = trow;
+    this.column = tcol;
+	this.log.append("[+]Starting Download Object.\n");
+	//inner classes used here for better performance
+	myDownloader = new GetRemoteFile(group, contentAdv, destination, this.log, this.urTable,this.row,this.column); 
+	System.out.println("Destination is :: " + destination.getAbsolutePath());
+
+	}
     
 }
 //inner class which handles download requestes
 class GetRemoteFile extends GetContentRequest
 {
-    private JProgressBar progressBar = null;
+    private JTable urTable = null;
+    int row,col;
+	private JProgressBar progressBar = null;
     private JTextArea log =null;
     private boolean downloadFinished = false;
     public GetRemoteFile(PeerGroup group, ContentAdvertisement contentAdv, File destination , JTextArea log,
@@ -53,9 +71,21 @@ class GetRemoteFile extends GetContentRequest
         this.log.append("[+]Download in Progress.\n");
     }
     
+    public GetRemoteFile(PeerGroup group, ContentAdvertisement contentAdv, File destination , JTextArea log,
+            JTable table,int trow,int tcol)
+    {
+    	super(group, contentAdv, destination);
+	this.urTable= table;
+	row = trow;
+	col = tcol;
+	this.log = log;
+	this.log.append("[+]Download in Progress.\n");
+	}
+    
     public void notifyUpdate(int percentage) //this method will notify about download progress
     {
-     progressBar.setValue(percentage);   
+      //progressBar.setValue(percentage);
+    	urTable.setValueAt(percentage, row, col);
     }
     
     public void notifyDone()//this method will return message about download process 
