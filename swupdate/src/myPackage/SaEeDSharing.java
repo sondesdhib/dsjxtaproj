@@ -65,7 +65,7 @@ public class SaEeDSharing extends Thread implements SearchListener
                 log.append("[+]CMS object Successfully Created.\n");
             }
            
-            DOMElements myElement = new DOMElements(myPath);
+            DOMElements myElement = new DOMElements();
             myElement.Parse(myPath + File.separator + "Version.xml");
             
             HashMap<String, String> DirMap = myElement.GetDir();
@@ -79,7 +79,7 @@ public class SaEeDSharing extends Thread implements SearchListener
 
             while(i.hasNext()){
               Map.Entry me = (Map.Entry)i.next();
-              System.out.println(me.getKey() + " : " + me.getValue() + " HERE ");
+              System.out.println(me.getKey() + " : " + me.getValue() );
             
             File DirPath = new File(myPath + File.separator + me.getValue());
             System.out.println(DirPath.getPath());
@@ -87,7 +87,8 @@ public class SaEeDSharing extends Thread implements SearchListener
             CheckSumCalc checkSum = new CheckSumCalc();
             
             
-            String base = myPath.getCanonicalPath();
+            File dir = new File(".");
+            String base = dir.getCanonicalPath();
             String relative = new File(base).toURI().relativize(new File(DirPath.getPath()).toURI()).getPath();
             
             String version = me.getKey().toString();

@@ -3,6 +3,7 @@ package myPackage;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Hashtable;
 
@@ -832,7 +833,7 @@ public class frmMain extends javax.swing.JFrame
         MenuItemConnect.setEnabled(false);
        
         //Starting Chat Services, which includes chat input and Output using the same pipe.
-        chatIn = new ChatInput(connection.getSaEeDGroup(), this.txtLog, this.txtChatArea);
+        chatIn = new ChatInput(connection.getSaEeDGroup(), this.txtLog, this.txtChatArea,this);
         chatIn.startListening();
         chatOut = new ChatOutput(connection.getSaEeDGroup(), this.txtLog, this.txtChatArea);
         chatOut.start();
@@ -1119,7 +1120,7 @@ public class frmMain extends javax.swing.JFrame
         //Launching JXTA 
         connection = new StartJXTA(myapp.txtLog);
         //Starting Chat Services, which includes chat input and Output using the same pipe.
-        chatIn = new ChatInput(connection.getSaEeDGroup(), myapp.txtLog, myapp.txtChatArea);
+        chatIn = new ChatInput(connection.getSaEeDGroup(), myapp.txtLog, myapp.txtChatArea,myapp);
         chatIn.startListening();
         chatOut = new ChatOutput(connection.getSaEeDGroup(), myapp.txtLog, myapp.txtChatArea);
         chatOut.start();
@@ -1134,6 +1135,12 @@ public class frmMain extends javax.swing.JFrame
         launchSharing.start();        
         
         
+    }
+    public void setSearchFileName(String filename)
+    {
+    	txtFilename.setText(filename);
+    	//ActionEvent event = new ActionEvent();
+    	btnSearchActionPerformed(null);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1207,13 +1214,5 @@ public class frmMain extends javax.swing.JFrame
     private JTextField txtField;    
     private JTextField root;
     // End of variables declaration//GEN-END:variables
-    private Integer checkMinMax(Integer value) {
-        int intValue = value.intValue();
-        if (intValue < 0) {
-          intValue = 0;
-        } else if (100 < intValue) {
-          intValue = 100;
-        }
-        return new Integer(intValue);
-      }
+    
 }

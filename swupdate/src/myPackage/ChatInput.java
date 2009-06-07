@@ -14,6 +14,9 @@ package myPackage;
 
 import java.awt.Color;
 import java.io.FileInputStream;
+import java.util.StringTokenizer;
+
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 //importing JXTA libraries
 import net.jxta.document.AdvertisementFactory;
@@ -37,13 +40,15 @@ public class ChatInput extends Thread implements PipeMsgListener
     private PipeService myPipeService =null;
     private PipeAdvertisement pipeAdv =null;
     private InputPipe pipeInput = null;
+    private frmMain main=null;
     
     /** Creates a new instance of ChatInput */
-    public ChatInput(PeerGroup group, JTextArea log, JTextArea chat) 
+    public ChatInput(PeerGroup group, JTextArea log, JTextArea chat,frmMain obj) 
     {
         this.log = log;
         this.txtChat = chat;
         this.SaEeDGroup = group;
+        this.main = obj;
         getServices();
         
     }
@@ -117,6 +122,17 @@ public class ChatInput extends Thread implements PipeMsgListener
         else{
          //txtChat.append("[ " + me+ "@" + me4 +"]  " + me3 + "\n");
          log.append("Received new version for update "+ " [ " + me+ "@" + me4 +"]  " + me3 + "\n");
+         StringTokenizer token = new StringTokenizer(msgContent);
+         String version = token.nextToken();
+         String rootDir = token.nextToken();
+         
+         int result = JOptionPane.showConfirmDialog(null,
+                 "New Version Available "+version+". Click Yes to download ?" +
+                 "", "choose one", JOptionPane.YES_NO_OPTION);
+         if(result == JOptionPane.OK_OPTION)
+         {
+        	main.setSearchFileName(version);
+         }
         }  
     }
     
