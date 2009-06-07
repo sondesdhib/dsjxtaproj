@@ -36,7 +36,7 @@ public class SaEeDSharing extends Thread implements SearchListener
         //Defining Class Variables
     private PeerGroup SaEeDGroup =null;
     private JTextArea log=null;
-    private File myPath = null;
+    static File myPath = null;
     //using Content Management Service Library for Sharing purposes
     private CMS cms =null;
     
