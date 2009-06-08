@@ -52,6 +52,7 @@ public class ChatOutput extends Thread implements Runnable,
     
     private RendezVousService myRendezVousService=null;
     private String msg = null;
+    private String type = null;
     /** Creates a new instance of ChatOutput */
     public ChatOutput(PeerGroup group,JTextArea log,JTextArea chat) 
     {
@@ -106,6 +107,25 @@ public class ChatOutput extends Thread implements Runnable,
         log.append("[+]Output Pipe Successfully Created.\n");
     }
     
+    public void setType(int val){//This accessor will set messages that need to be sent
+        switch (val) {
+		case 1:
+			this.type = "PUBLISH";
+			break;
+		case 2:
+			this.type = "REQUEST";
+			break;
+		case 3:
+			this.type = "RESPONSE";
+			break;
+		default:
+			this.type = "NONE";
+			break;
+		}
+
+        
+    }
+    
     public void setMessage(String message){//This accessor will set messages that need to be sent
         this.msg = message;
     } 
@@ -128,14 +148,21 @@ public class ChatOutput extends Thread implements Runnable,
             StringMessageElement sme1 = new StringMessageElement("peerID",myPeerID,null);
             StringMessageElement sme2 = new StringMessageElement("chatMessage",msg,null);
             StringMessageElement sme3 = new StringMessageElement("Time",myTime,null);
+            StringMessageElement sme4 = new StringMessageElement("Type",type,null);
             
             myMessage.addMessageElement(null,sme);
             myMessage.addMessageElement(null,sme1);
             myMessage.addMessageElement(null,sme2);
             myMessage.addMessageElement(null,sme3);
+            myMessage.addMessageElement(null,sme4);
             //Trigger the Sending            
             pipeOut.send(myMessage);
-            log.append("[ " + myPeerName+"@" + myTime+ "]  " + msg + "\n");
+            //log.append("[ " + myPeerName+"@" + myTime+ "]  " + msg + "\n");
+            int tcount = 0;
+            if(type.equals("REQUEST"))
+            {
+            	// wait for a response for maximum 5 seconds
+            }
             
         }catch(Exception e)
         {

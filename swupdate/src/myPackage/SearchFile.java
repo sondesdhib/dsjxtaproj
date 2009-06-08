@@ -14,6 +14,7 @@ package myPackage;
 import java.awt.Color;
 import java.awt.Component;
 import java.io.File;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.swing.DefaultCellEditor;
@@ -41,18 +42,19 @@ public class SearchFile extends Thread
     private String searchValue =null;
     protected ListRequestor reqestor =null;
     private JTable table = null;
+    private frmMain objMain = null;
     
     public static ContentAdvertisement [] contents=null;
     
     private boolean running = true;
     
-    public SearchFile(PeerGroup group,String searchKey, JTextArea log, JTable table) 
+    public SearchFile(PeerGroup group,String searchKey, JTextArea log, JTable table, frmMain main) 
     {
         this.SaEeDGroup = group;
         this.searchValue = searchKey;
         this.log = log;
         this.table = table;
-        
+        this.objMain = main;
     }
     public void run() //cause this thread to execute as long as needed to find 
     {                 // the Contents  
@@ -61,12 +63,12 @@ public class SearchFile extends Thread
         if(running == false){
             break;
         }
-        reqestor = new ListRequestor(SaEeDGroup,searchValue,log, table);        
+        reqestor = new ListRequestor(SaEeDGroup,searchValue,log, table,objMain);        
         reqestor.activateRequest();
         
             try{
-            Thread.sleep(10*1000); //Time out for each search through network
-            stopThread();
+            Thread.sleep(100*1000); //Time out for each search through network
+            
             } catch(InterruptedException ie)
             {
                 stopThread();
@@ -103,12 +105,15 @@ class ListRequestor extends CachedListContentRequest
     private PeerGroup LRGroup = null;
     DownloadFile [] df;
     private int r_count = 0;
+    private HashMap<Integer , Boolean> indexMap;
+    private frmMain objMain = null;
     
-    public ListRequestor(PeerGroup SaEeDGroup , String SubStr, JTextArea log,JTable table){
+    public ListRequestor(PeerGroup SaEeDGroup , String SubStr, JTextArea log,JTable table,frmMain main){
         super(SaEeDGroup,SubStr);
         this.log = log;
         this.table = table;
         this.LRGroup = SaEeDGroup;
+        this.objMain = main;
     }
 
     @Override
@@ -159,8 +164,21 @@ class ListRequestor extends CachedListContentRequest
             
             //System.out.println("File name :: " + fullPath.getPath());
             
+            // adding things to hashmap
+            
             df[i] = new DownloadFile(LRGroup,searchResult[i], fullPath, table,i,4,log);
-            df[i].start();
+            indexMap.put(i,false);
+            while(indexMap.get(i).equals(false))
+            {
+            	objMain.SendRequest(searchResult[i].getName(), searchResult[i].getDescription(), i);
+            	try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+            
         }
     }
     public ContentAdvertisement [] getContentAdvs()//acessor to return contents
@@ -168,6 +186,21 @@ class ListRequestor extends CachedListContentRequest
         return searchResult;
     }
 
+    void StartDownload(int i)
+    {
+    	if(!df[i].isAlive() && indexMap.get(i).equals(false))
+    		{
+    		indexMap.put(i, true);
+    		df[i].start();
+    		}
+    }
+    
+    void WrongFile(int i)
+    {
+    	table.setValueAt("CRC Error", i, 4);
+    	indexMap.put(i, false);
+    }
+    
     private Integer checkMinMax(Integer value) {
         int intValue = value.intValue();
         if (intValue < 0) {
