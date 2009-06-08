@@ -503,6 +503,7 @@ public class frmMain extends javax.swing.JFrame
         );
         jTabbedPane1.addTab("Shared Files", new javax.swing.ImageIcon(getClass().getResource("/myPackage/myIcons/24x24/folderIcon.png")), jPanel3, "List of Shared Files");
 
+        /*
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Download Status:"));
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel2.setText("File Name:");
@@ -587,8 +588,8 @@ public class frmMain extends javax.swing.JFrame
                     .addComponent(btnCancel))
                 .addContainerGap(397, Short.MAX_VALUE))
         );
-        jTabbedPane1.addTab("Downloads", new javax.swing.ImageIcon(getClass().getResource("/myPackage/myIcons/24x24/downloadIcon.png")), jPanel4, "Downloads Status");
-
+        jTabbedPane1.addTab("Downloads", new javax.swing.ImageIcon(getClass().getResource("/myPackage/myIcons/24x24/downloadIcon.png")), jPanel4, "Downloads Status");  
+        */
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Peers Chatting Service:"));
         //txtChatArea.setColumns(20);
         //txtChatArea.setEditable(false);
