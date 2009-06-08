@@ -190,7 +190,7 @@ class ListRequestor extends CachedListContentRequest
     void StartDownload(int i)
     {
     	indexMap.put(i, true);
-    	System.out.println("Start download called !");
+    	//System.out.println("Start download called !");
     	if(!df[i].isAlive() && indexMap.get(i).equals(false))
     		{
     		indexMap.put(i, true);
