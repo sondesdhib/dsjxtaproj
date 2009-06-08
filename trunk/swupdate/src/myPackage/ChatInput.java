@@ -119,6 +119,8 @@ public class ChatInput extends Thread implements PipeMsgListener
             e.printStackTrace();
         }
         //Assigning values to wanted Tages
+        
+        
         ElementIterator el = myMessage.getMessageElements();
         MessageElement me = myMessage.getMessageElement("peerName");
         MessageElement me2 = myMessage.getMessageElement("peerID");
@@ -136,6 +138,7 @@ public class ChatInput extends Thread implements PipeMsgListener
             return;
         }
         else{
+        	System.out.println("I actually get a message !!!  : " + msgContent);
         	
         	if(type.equals("PUBLISH")){
         		log.append("Received new version for update "+ " [ " + me+ "@" + me4 +"]  " + me3 + "\n");

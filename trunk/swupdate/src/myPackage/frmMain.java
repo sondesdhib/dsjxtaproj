@@ -1055,7 +1055,7 @@ public class frmMain extends javax.swing.JFrame
     	chatIn.setSearchFile(startSearch);
     	chatOut.setMessage(version +" "+checksum);
     	chatOut.setType(2);
-    	System.out.println("Sending message :: " + version + " " + checksum + " " + i);
+    	//System.out.println("Sending message :: " + version + " " + checksum + " " + i);
         chatOut.startingPipe();
         chatIn.startListening();
     }

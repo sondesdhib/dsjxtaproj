@@ -162,7 +162,7 @@ public class ChatOutput extends Thread implements Runnable,
             if(type.equals("REQUEST"))
             {
             	// wait for a response for maximum 5 seconds
-            	System.out.println("Requesting :: " + sme2.toString());
+            	//System.out.println("Requesting :: " + sme2.toString());
             }
             
         }catch(Exception e)
