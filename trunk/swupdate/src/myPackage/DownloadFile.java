@@ -29,13 +29,20 @@ public class DownloadFile extends Thread
     private JTextArea log;
     private JTable urTable = null;
     private int row,column;
+    private ContentAdvertisement adv;
+    private File dest;
+    private JProgressBar bar;
     public DownloadFile(PeerGroup group, ContentAdvertisement contentAdv, File destination , JTextArea log,
                          JProgressBar progress) 
     {
         this.log = log;
+        this.bar = progress;
+        this.dest = destination;
+        this.adv = contentAdv;
+        this.SaEeDGroup = group;
         this.log.append("[+]Starting Download Object.\n");
         //inner classes used here for better performance
-        myDownloader = new GetRemoteFile(group, contentAdv, destination, this.log, progress); 
+         
         System.out.println("Destination is :: " + destination.getAbsolutePath());
         
     }
@@ -45,6 +52,12 @@ public class DownloadFile extends Thread
     	myDownloader.cancel();
     }
     
+    @Override
+    public void run() {
+    	// TODO Auto-generated method stub
+    	myDownloader = new GetRemoteFile(SaEeDGroup, adv, dest, this.log, this.urTable,this.row,this.column);	
+    }
+    
     public DownloadFile(PeerGroup group, ContentAdvertisement contentAdv, File destination , JTable table,
             int trow,int tcol , JTextArea log) 
     {
@@ -52,9 +65,13 @@ public class DownloadFile extends Thread
     this.urTable = table;
     this.row = trow;
     this.column = tcol;
+    this.log = log;
+    this.dest = destination;
+    this.adv = contentAdv;
+    this.SaEeDGroup = group;
 	this.log.append("[+]Starting Download Object.\n");
 	//inner classes used here for better performance
-	myDownloader = new GetRemoteFile(group, contentAdv, destination, this.log, this.urTable,this.row,this.column); 
+	 
 	System.out.println("Destination is :: " + destination.getAbsolutePath());
 
 	}
