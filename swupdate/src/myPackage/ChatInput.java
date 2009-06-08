@@ -157,7 +157,7 @@ public class ChatInput extends Thread implements PipeMsgListener
         	else if (type.equals("REQUEST"))
         	{
         	// This is a mother node request !!
-        		if(myPeerID.equals("mother"))
+        		if(SaEeDGroup.getPeerName().equals("mother"))
         		{
         			System.out.println("I AM A MOTHER NODE !! I NEED TO RESPOND !!");
         			// I will send a response after checking the version checksum
@@ -171,7 +171,7 @@ public class ChatInput extends Thread implements PipeMsgListener
         	else if (type.equals("RESPONSE"))
         	{
         	// This is a mother node request !!
-        		if(SaEeDGroup.getPeerName().equals("mother"))
+        		if(peerName.equals("mother"))
         		{
         			System.out.println("RECEIVED RESPONSE from Mother and must be legitimate");
         			// I will send a response after checking the version checksum
@@ -196,7 +196,7 @@ public class ChatInput extends Thread implements PipeMsgListener
                     }
                     else
                     {
-                    	System.out.println("Not my message ... None of my business !!");
+                    	//System.out.println("Not my message ... None of my business !!");
                     }
                     
         		}

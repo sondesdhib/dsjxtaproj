@@ -168,19 +168,19 @@ class ListRequestor extends CachedListContentRequest
             // adding things to hashmap
             
             df[i] = new DownloadFile(LRGroup,searchResult[i], fullPath, table,i,4,log);
-            
+            df[i].start();
         }
-        indexMap = new HashMap<Integer, Boolean>();
-        for(int i=0;i<searchResult.length;i++)
-        {
-        	indexMap.put(i,false);
-        	System.out.println("For download " + i);
-            while(indexMap.get(i) == (false))
-            {
-            	objMain.SendRequest(searchResult[i].getName(), searchResult[i].getDescription(), i);
-            	
-            }	
-        }
+//        indexMap = new HashMap<Integer, Boolean>();
+//        for(int i=0;i<searchResult.length;i++)
+//        {
+//        	indexMap.put(i,false);
+//        	System.out.println("For download " + i);
+//            while(indexMap.get(i) == (false))
+//            {
+//            	objMain.SendRequest(searchResult[i].getName(), searchResult[i].getDescription(), i);
+//            	
+//            }	
+//        }
     }
     public ContentAdvertisement [] getContentAdvs()//acessor to return contents
     { 
