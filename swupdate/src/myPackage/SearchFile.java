@@ -144,7 +144,22 @@ class ListRequestor extends CachedListContentRequest
             log.append("[*]Found: " + searchResult[i].getName()+"\n" +
                     "Size: " + searchResult[i].getLength() + " Bytes\n");
             dm.addRow(new Object [] {searchResult[i].getName(),searchResult[i].getType(), searchResult[i].getLength(),searchResult[i].getDescription(), 0}); 
-            df[i] = new DownloadFile(LRGroup,searchResult[i], new File("file"+i+".mp3"), table,i,4,log);
+            
+            // Getting the file full path and uploading in the respective directory
+            File myPath = SaEeDSharing.myPath;
+            File fullPath = new File (myPath.getAbsolutePath() + File.separator + searchResult[i].getType());
+            // make the directories if they are not there
+            String getPathDir = fullPath.getParent();
+            
+            
+            boolean success = (new File(getPathDir)).mkdirs();
+            if (success) {
+              System.out.println("Directories: " + getPathDir + " created");
+            }
+            
+            System.out.println("File name :: " + fullPath.getPath());
+            
+            df[i] = new DownloadFile(LRGroup,searchResult[i], fullPath, table,i,4,log);
             df[i].start();
         }
     }
