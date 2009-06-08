@@ -168,7 +168,7 @@ public class ChatInput extends Thread implements PipeMsgListener
         	else if (type.equals("RESPONSE"))
         	{
         	// This is a mother node request !!
-        		if(peerName.equals("mother"))
+        		if(SaEeDGroup.getPeerName().equals("mother"))
         		{
         			System.out.println("RECEIVED RESPONSE from Mother and must be legitimate");
         			// I will send a response after checking the version checksum

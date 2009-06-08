@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Hashtable;
 
+import javax.naming.directory.SearchResult;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
@@ -167,18 +168,18 @@ class ListRequestor extends CachedListContentRequest
             // adding things to hashmap
             
             df[i] = new DownloadFile(LRGroup,searchResult[i], fullPath, table,i,4,log);
-            indexMap.put(i,false);
-            while(indexMap.get(i).equals(false))
+            
+        }
+        indexMap = new HashMap<Integer, Boolean>();
+        for(int i=0;i<searchResult.length;i++)
+        {
+        	indexMap.put(i,false);
+        	System.out.println("For download " + i);
+            while(indexMap.get(i) == (false))
             {
             	objMain.SendRequest(searchResult[i].getName(), searchResult[i].getDescription(), i);
-            	try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-            
+            	
+            }	
         }
     }
     public ContentAdvertisement [] getContentAdvs()//acessor to return contents
@@ -188,9 +189,12 @@ class ListRequestor extends CachedListContentRequest
 
     void StartDownload(int i)
     {
+    	indexMap.put(i, true);
+    	System.out.println("Start download called !");
     	if(!df[i].isAlive() && indexMap.get(i).equals(false))
     		{
     		indexMap.put(i, true);
+    		System.out.println("Start download called");
     		df[i].start();
     		}
     }
