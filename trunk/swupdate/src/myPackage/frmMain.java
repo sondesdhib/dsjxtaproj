@@ -1063,8 +1063,9 @@ public class frmMain extends javax.swing.JFrame
     public void SendResponse(String peername,String value)
     {
     	chatIn.stopListening();
-    	chatOut.setMessage(peername+" "+value);
     	chatOut.setType(3);
+    	chatOut.setMessage(peername+" "+value);
+    	System.out.println("I send :: " + peername+" "+value);
         chatOut.startingPipe();
         chatIn.startListening();
     }

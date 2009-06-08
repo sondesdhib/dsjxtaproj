@@ -55,7 +55,8 @@ public class DownloadFile extends Thread
     @Override
     public void run() {
     	// TODO Auto-generated method stub
-    	myDownloader = new GetRemoteFile(SaEeDGroup, adv, dest, this.log, this.urTable,this.row,this.column);	
+    	myDownloader = new GetRemoteFile(SaEeDGroup, adv, dest, this.log, this.urTable,this.row,this.column);
+    	
     }
     
     public DownloadFile(PeerGroup group, ContentAdvertisement contentAdv, File destination , JTable table,
