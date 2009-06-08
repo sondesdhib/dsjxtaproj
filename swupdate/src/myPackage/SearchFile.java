@@ -154,10 +154,10 @@ class ListRequestor extends CachedListContentRequest
             
             boolean success = (new File(getPathDir)).mkdirs();
             if (success) {
-              System.out.println("Directories: " + getPathDir + " created");
+              System.out.println("Directories Created: " + getPathDir + " created");
             }
             
-            System.out.println("File name :: " + fullPath.getPath());
+            //System.out.println("File name :: " + fullPath.getPath());
             
             df[i] = new DownloadFile(LRGroup,searchResult[i], fullPath, table,i,4,log);
             df[i].start();
