@@ -41,6 +41,19 @@ public class ChatInput extends Thread implements PipeMsgListener
     private PipeAdvertisement pipeAdv =null;
     private InputPipe pipeInput = null;
     private frmMain main=null;
+    private int ThreadIndex = 0;
+    private SearchFile sf = null;
+    
+    // Set Download thread index
+    public void setThreadIndex(int index)
+    {
+    	ThreadIndex = index;
+    }
+    
+    public void setSearchFile(SearchFile gf)
+    {
+    	sf =gf;
+    }
     
     /** Creates a new instance of ChatInput */
     public ChatInput(PeerGroup group, JTextArea log, JTextArea chat,frmMain obj) 
@@ -111,28 +124,86 @@ public class ChatInput extends Thread implements PipeMsgListener
         MessageElement me2 = myMessage.getMessageElement("peerID");
         MessageElement me3 = myMessage.getMessageElement("chatMessage");
         MessageElement me4 = myMessage.getMessageElement("Time");
+        MessageElement me5 = myMessage.getMessageElement("Type");
         
         String peerName = me.toString();
         String peerID = me2.toString();
         String msgContent = me3.toString();
         String sentTime = me4.toString();
+        String type = me5.toString();
+        
         if(me.toString() == null || me2.equals(myPeerID)){
             return;
         }
         else{
+        	
+        	if(type.equals("PUBLISH")){
+        		log.append("Received new version for update "+ " [ " + me+ "@" + me4 +"]  " + me3 + "\n");
+                StringTokenizer token = new StringTokenizer(msgContent);
+                String version = token.nextToken();
+                String rootDir = token.nextToken();
+                
+                int result = JOptionPane.showConfirmDialog(null,
+                        "New Version Available "+version+". Click Yes to download ?" +
+                        "", "choose one", JOptionPane.YES_NO_OPTION);
+                if(result == JOptionPane.OK_OPTION)
+                {
+               	main.setSearchFileName(version);
+                }	
+        	}
+        	else if (type.equals("REQUEST"))
+        	{
+        	// This is a mother node request !!
+        		if(myPeerID.equals("mother"))
+        		{
+        			System.out.println("I AM A MOTHER NODE !! I NEED TO RESPOND !!");
+        			// I will send a response after checking the version checksum
+        			main.SendResponse(peerName, "true");
+        		}
+        		else
+        		{
+        			System.out.println("Mother node Req ! Conviniently ignore the message !");	
+        		}
+        	}
+        	else if (type.equals("RESPONSE"))
+        	{
+        	// This is a mother node request !!
+        		if(peerName.equals("mother"))
+        		{
+        			System.out.println("RECEIVED RESPONSE from Mother and must be legitimate");
+        			// I will send a response after checking the version checksum
+        			StringTokenizer token = new StringTokenizer(msgContent);
+                    String tpeername = token.nextToken();
+                    String tvalue = token.nextToken();
+                    if(tpeername.equals(myPeerID))
+                    {
+                    	// then this is for me !!
+                    	if(tvalue.equals("true"))
+                    	{
+                    		// start the download
+                    		sf.reqestor.StartDownload(ThreadIndex);
+                    		System.out.println("YES I AM THE PEER AND STARTING DOWNLOAD!!!");
+                    	}
+                    	else
+                    	{
+                    		// remove the dw thread
+                    		sf.reqestor.WrongFile(ThreadIndex);
+                    		System.out.println("I AM THE PEER BUT CRC FAILED !");
+                    	}
+                    }
+                    else
+                    {
+                    	System.out.println("Not my message ... None of my business !!");
+                    }
+                    
+        		}
+        		else
+        		{
+        			System.out.println("Mother node Req ! Conviniently ignore the message !");	
+        		}
+        	}
          //txtChat.append("[ " + me+ "@" + me4 +"]  " + me3 + "\n");
-         log.append("Received new version for update "+ " [ " + me+ "@" + me4 +"]  " + me3 + "\n");
-         StringTokenizer token = new StringTokenizer(msgContent);
-         String version = token.nextToken();
-         String rootDir = token.nextToken();
          
-         int result = JOptionPane.showConfirmDialog(null,
-                 "New Version Available "+version+". Click Yes to download ?" +
-                 "", "choose one", JOptionPane.YES_NO_OPTION);
-         if(result == JOptionPane.OK_OPTION)
-         {
-        	main.setSearchFileName(version);
-         }
         }  
     }
     

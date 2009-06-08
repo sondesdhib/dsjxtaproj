@@ -1002,7 +1002,7 @@ public class frmMain extends javax.swing.JFrame
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
 //Start Searching for contents in Peer Group
         startSearch = new SearchFile(connection.getSaEeDGroup(), this.txtFilename.getText(), this.txtLog,
-                                     this.mySearchTable);
+                                     this.mySearchTable, this);
         startSearch.start();
         btnSearch.setEnabled(false);
         btnStop.setEnabled(true);
@@ -1039,6 +1039,7 @@ public class frmMain extends javax.swing.JFrame
     	launchSharing.launchCMS();
         chatIn.stopListening();
         //chatOut.setMessage(txtMessage.getText());
+        chatOut.setType(1);
         chatOut.setMessage(txtField.getText()+" "+root.getText());
         chatOut.startingPipe();
         //activating the Input pipe again
@@ -1046,6 +1047,28 @@ public class frmMain extends javax.swing.JFrame
        // txtMessage.setText("");
     }//GEN-LAST:event_btnSendMessageActionPerformed
 
+        
+    public void SendRequest(String version,String checksum, int i)
+    {
+    	chatIn.stopListening();
+    	chatIn.setThreadIndex(i);
+    	chatIn.setSearchFile(startSearch);
+    	chatOut.setMessage(version +" "+checksum);
+    	chatOut.setType(2);
+        chatOut.startingPipe();
+        chatIn.startListening();
+    }
+    
+    public void SendResponse(String peername,String value)
+    {
+    	chatIn.stopListening();
+    	chatOut.setMessage(peername+" "+value);
+    	chatOut.setType(3);
+        chatOut.startingPipe();
+        chatIn.startListening();
+    }
+    
+    
     private void MenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemExitActionPerformed
         //Exiting 
         System.out.println("[+]Bye bye.");
